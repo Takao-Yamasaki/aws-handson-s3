@@ -27,6 +27,7 @@ resource "aws_s3_bucket_public_access_block" "aws_handson_s3" {
 }
 
 # バケットポリシーの作成
+# NOTE: CloudFront以外からでもアクセス可能
 resource "aws_s3_bucket_policy" "aws_handson_s3" {
   bucket = aws_s3_bucket.aws_handson_s3.id
   policy = <<POLICY
@@ -48,13 +49,13 @@ resource "aws_s3_bucket_policy" "aws_handson_s3" {
   }
   POLICY
 
-  // NOTE: S3バケットパブリックアクセスブロックを解除した後に作成する
+  # NOTE: S3バケットパブリックアクセスブロックを解除した後に作成する
   depends_on = [
     aws_s3_bucket_public_access_block.aws_handson_s3,
   ]
 }
 
-// 静的ウェブサイトホスティングのURLを表示
+# 静的ウェブサイトホスティングのURLを表示
 output "aws_handson_s3_url" {
   value = aws_s3_bucket_website_configuration.aws_handson_s3.website_endpoint
 }
