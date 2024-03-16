@@ -18,3 +18,9 @@ mkdir my-webpage
 ```
 aws s3 cp index.html s3://zackzack.link
 ```
+- AWS CLIを使って、カレントディレクトリ配下を全てS3バケットにアップロード
+```
+pwd /home/ec2-user/environment/my-webpage
+aws s3 cp . s3://zackzack.link --recursive
+```
+- スーパーリロードしてキャッシュを削除すると、ファビコンが表示されるようになる
