@@ -56,5 +56,5 @@ resource "aws_s3_bucket_policy" "aws_handson_s3" {
 
 // 静的ウェブサイトホスティングのURLを表示
 output "aws_handson_s3_url" {
-  value = aws_s3_bucket.aws_handson_s3.website_endpoint
+  value = aws_s3_bucket_website_configuration.aws_handson_s3.website_endpoint
 }
