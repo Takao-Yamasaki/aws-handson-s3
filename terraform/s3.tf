@@ -7,15 +7,16 @@ resource "aws_s3_bucket" "aws_handson_s3" {
   }
 }
 
-# ウェブサイトホスティングの設定
-resource "aws_s3_bucket_website_configuration" "aws_handson_s3" {
-  bucket = aws_s3_bucket.aws_handson_s3.id
+# NOTE: S3の静的ホスティングを使用する場合はコメント解除する
+# # ウェブサイトホスティングの設定
+# resource "aws_s3_bucket_website_configuration" "aws_handson_s3" {
+#   bucket = aws_s3_bucket.aws_handson_s3.id
   
-  # インデックスドキュメントの設定
-  index_document {
-    suffix = "index.html"
-  }
-}
+#   # インデックスドキュメントの設定
+#   index_document {
+#     suffix = "index.html"
+#   }
+# }
 
 # S3バケットパブリックアクセスブロックを解除
 resource "aws_s3_bucket_public_access_block" "aws_handson_s3" {
@@ -27,7 +28,7 @@ resource "aws_s3_bucket_public_access_block" "aws_handson_s3" {
 }
 
 # バケットポリシーの作成
-# NOTE: CloudFront以外からでもアクセス可能
+# NOTE: CloudFrontからのみアクセス可能
 resource "aws_s3_bucket_policy" "aws_handson_s3" {
   bucket = aws_s3_bucket.aws_handson_s3.id
   policy = <<POLICY
@@ -37,7 +38,9 @@ resource "aws_s3_bucket_policy" "aws_handson_s3" {
       {
         "Sid": "PublicReadGetObject",
         "Effect": "Allow",
-        "Principal": "*",
+        "Principal": {
+          "AWS": "${aws_cloudfront_origin_access_identity.aws_handson_s3.iam_arn}"
+        },
         "Action": [
           "s3:GetObject"
         ],
@@ -55,7 +58,8 @@ resource "aws_s3_bucket_policy" "aws_handson_s3" {
   ]
 }
 
-# 静的ウェブサイトホスティングのURLを表示
-output "aws_handson_s3_url" {
-  value = aws_s3_bucket_website_configuration.aws_handson_s3.website_endpoint
-}
+# NOTE: S3の静的ホスティングを使用する場合はコメント解除する
+# # 静的ウェブサイトホスティングのURLを表示
+# output "aws_handson_s3_url" {
+#   value = aws_s3_bucket_website_configuration.aws_handson_s3.website_endpoint
+# }

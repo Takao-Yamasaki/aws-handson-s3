@@ -7,6 +7,11 @@ resource "aws_cloudfront_distribution" "aws_handson_s3" {
   origin {
     domain_name = aws_s3_bucket.aws_handson_s3.bucket_regional_domain_name
     origin_id = aws_s3_bucket.aws_handson_s3.id
+    
+    # CloudFrontからのアクセスのみに制限
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.aws_handson_s3.cloudfront_access_identity_path
+    }
   }
   enabled = true
 
@@ -56,3 +61,7 @@ resource "aws_cloudfront_distribution" "aws_handson_s3" {
   # 北米、欧州、アジア、中東、アフリカを使用
   price_class = "PriceClass_200"
 }
+
+# Amazon CloudFrontオリジンのアクセスIDを作成
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_identity
+resource "aws_cloudfront_origin_access_identity" "aws_handson_s3" {}

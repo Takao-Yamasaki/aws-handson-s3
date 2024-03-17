@@ -55,6 +55,22 @@ X-Cache: Miss from cloudfront
 - http://xxxxxx.xxx.s3-website-ap-northeast-1.amazonaws.com/
 -  開発者ツールの[Network]から、レスポンスにX-Cacheの記載がないことを確認
 
+### ACMを使って、Route53-CloudFront-S3でHTTPアクセス
+- (注意)SSL証明書は、バージニア北部で作成すること
+- https://zackzack.link/
+```
+# CloudFrontにキャッシュ
+X-Cache: Hit from cloudfront
+```
+## CloudFrontからのみのアクセスに限定する
+- S3バケットポリシーに制限を入れる
+
+## 削除方法
+- (注意)S3バケット内を空にした上で実施すること
+```
+terraform destroy
+```
+
 ## 参考
 - CloudFrontのデフォルトルートオブジェクトとS3の静的ウェブサイトホスティングのインデックスドキュメントの動作の違い
 https://dev.classmethod.jp/articles/cloudfront_s3_difference/
